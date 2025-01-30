@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOU List with Actions</title>
+    {% load static %}
+    <style>
+        /* General body styles */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f6f9;
+            color: #333;
+        }
+
+        /* Container for layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Navigation styles */
+        
+        /* Navigation styles */
+nav {
+    width: 250px;
+    background-color: #434978;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.profile-icon {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    color: #434978;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-icon:hover {
+    background-color: #a9aed3;
+}
+
+.student-name {
+    font-size: 20px;
+    margin: 0;
+}
+
+/* Navigation links */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+}
+
+nav ul li img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    background-color: #626bb1;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+nav ul li a:hover {
+    background-color: rgb(50, 46, 88);
+}
+
+nav hr {
+    border: 0;
+    border-top: 1px solid #626bb1;
+    margin: 15px 0;
+}
+
+/* Active link styles */
+nav ul li a.active {
+    background-color: #3a3f6e;
+}
+
+        /* Content styles */
+        .content {
+            flex: 1;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .mou-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .mou-header input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            width: 250px;
+            outline: none;
+        }
+
+        .search-button,
+        .expired-button,
+        .renewal-button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #434978;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .search-button:hover,
+        .expired-button:hover,
+        .renewal-button:hover {
+            background-color: #434978;
+            transform: scale(1.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 20px;
+            text-align: left;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #434978;
+            color: white;
+        }
+
+
+         tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+         tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        .button {
+            padding: 8px 12px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .view-button {
+            background-color: #1c7ed6;
+        }
+
+        .download-button {
+            background-color: #38b24c;
+        }
+
+        .view-button:hover {
+            background-color: #155a8b;
+        }
+
+        .download-button:hover {
+            background-color: #2d8c39;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background-color: white;
+            color: black;
+            width: 220px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            padding: 10px;
+        }
+
+        .dropdown a {
+            display: block;
+            color: black;
+            text-decoration: none;
+            padding: 8px 0;
+        }
+
+        .dropdown a:hover {
+            background-color: #ddd;
+        }
+
+        /* Profile icon interaction */
+        .profile-icon:hover {
+            background-color: #3b7bd3;
+        }
+        .highlight {
+        background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <div class="header">
+                <div class="profile-icon" id="profile-icon">
+                    <span>{{ request.user.username|slice:":1"|upper }}</span>
+                </div>
+                <h2 class="student-name">ADMIN</h2>
+            </div>
+        
+            <ul>
+                <li><img src="{% static 'images/home.png' %}" alt="Home Icon">
+                    <a href="{% url 'adminpage' %}" 
+                       class="{% if request.resolver_match.url_name == 'adminpage' %}active{% endif %}">Home</a>
+                </li>
+                <hr>
+                <li><img src="{% static 'images/mou.png' %}" alt="MOU Icon">
+                    <a href="{% url 'admin_mou' %}" 
+                       class="{% if request.resolver_match.url_name == 'admin_mou' %}active{% endif %}">MOU</a>
+                </li>
+                <hr>
+                <li><img src="{% static 'images/progress.png' %}" alt="Progress Icon">
+                    <a href="{% url 'admin_progress' %}" 
+                       class="{% if request.resolver_match.url_name == 'admin_progress' %}active{% endif %}">Progress</a>
+                </li>
+                <hr>
+                <li><img src="{% static 'images/activity.png' %}" alt="Activity Icon">
+                    <a href="{% url 'create_mou' %}" 
+                       class="{% if request.resolver_match.url_name == 'create_mou' %}active{% endif %}">Activity</a>
+                </li>
+                <hr>
+                <li><img src="{% static 'images/report.png' %}" alt="Report Icon">
+                    <a href="{% url 'mou_list' %}" 
+                       class="{% if request.resolver_match.url_name == 'mou_list' %}active{% endif %}">Report</a>
+                </li>
+            </ul>
+
+            <div class="dropdown" id="dropdown-menu">
+                <div class="profile-info">
+                    <p><strong>Username:</strong> {{ request.user.username }}</p>
+                    <p><strong>Email:</strong> {{ request.user.email }}</p>
+                </div>
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="{% url 'index' %}">Logout</a>
+            </div>
+        </nav>
+        
+        <div class="content">
+            <div class="mou-header">
+                <input type="text" id="search-input" placeholder="Search MOU..." class="search-input">
+                <div>
+                    <button class="expired-button" onclick="window.location.href='{% url 'admin_expired' %}'">Expired</button>
+                    <button class="renewal-button">Renewal</button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sector</th>
+                        <th>Partner</th>
+                        <th>Purpose</th>
+                        <th>View</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mou in mous %}
+                        <tr>
+                            <td>{{ mou.sector }}</td>
+                            <td>{{ mou.first_party }}</td>
+                            <td>{{ mou.purpose }}</td>
+
+                            <td><a href="{{ mou.pdf_doc.url }}" class="button view-button" target="_blank">View</a></td>
+                            <td><a href="{{ mou.pdf_doc.url }}" class="button download-button" download>Download</a></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No MOU records found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        // Toggle the dropdown menu
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdown-menu");
+            if (dropdown.style.display === "none" || dropdown.style.display === "") {
+                dropdown.style.display = "block";
+            } else {
+                dropdown.style.display = "none";
+            }
+        }
+
+        // Attach the event to the profile icon only
+        document.getElementById("profile-icon").addEventListener("click", function (event) {
+            event.stopPropagation(); // Prevent closing dropdown when clicking inside
+            toggleDropdown();
+        });
+
+        // Close the dropdown when clicking outside
+        window.onclick = function (event) {
+            if (!event.target.closest('#profile-icon')) {
+                var dropdown = document.getElementById("dropdown-menu");
+                if (dropdown.style.display === "block") {
+                    dropdown.style.display = "none";
+                }
+            }
+        };
+
+        document.getElementById('search-input').addEventListener('input', function () {
+        // Get the search term
+        const searchTerm = this.value.trim().toLowerCase();
+        
+        // Get all table rows except the header row
+        const rows = document.querySelectorAll('table tbody tr');
+
+        // Loop through each row
+        rows.forEach(function (row) {
+            let found = false;
+
+            // Get all table cells (td) in the row
+            const cells = row.querySelectorAll('td');
+
+            // Reset previous highlights
+            cells.forEach(function (cell) {
+                const text = cell.textContent;
+                // Remove existing highlights
+                cell.innerHTML = text;
+            });
+
+            // Check if any cell contains the search term
+            cells.forEach(function (cell) {
+                const text = cell.textContent.toLowerCase();
+                if (searchTerm && text.includes(searchTerm)) {
+                    found = true;
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    // Highlight the search term
+                    cell.innerHTML = cell.textContent.replace(regex, '<span class="highlight">$1</span>');
+                }
+            });
+
+            // Show the row if the search term is found in any cell, otherwise hide it
+            if (found) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+        
+    </script>
+</body>
+</html>

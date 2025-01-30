@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOU</title>
+    {% load static %}
+    <style>
+        /* General body styles */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff; /* Matching background color from admin.html */
+            color: #333;
+        }
+
+        /* Container for layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Navigation styles */
+        nav {
+            width: 250px;
+            background-color: #434978;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+    /* Removed justify-content: space-between */
+}
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 35px; /* Reduced space */
+}
+
+        .profile-icon {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            color: #434978;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 24px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-icon:hover {
+            background-color: #a9aed3;
+        }
+
+        .student-name {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        /* Dropdown menu styles */
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            background-color: white;
+            color: black;
+            width: 220px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            padding: 10px;
+        }
+
+        .dropdown a {
+            display: block;
+            color: #333;
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown a:hover {
+            background-color: #f2f2f2;
+        }
+
+        .profile-info {
+            margin-bottom: 10px;
+        }
+
+        /* Navigation links */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            background-color: #626bb1;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        nav ul li a:hover {
+            background-color: rgb(50, 46, 88);
+        }
+
+        nav hr {
+            border: 0;
+            border-top: 1px solid #626bb1;
+            margin: 15px 0;
+        }
+
+        /* Content styles */
+        .content {
+            flex: 1;
+            padding: 40px;
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+        .mou-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-button,
+        .expired-button,
+        .renewal-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #434978; /* Match the color from the navbar */
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .search-button:hover,
+        .expired-button:hover,
+        .renewal-button:hover {
+            background-color: #3a3f6e;
+            transform: scale(1.1);
+        }
+
+        .mou-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #f9f9f9;
+            margin-top: 25px;
+        }
+
+        .mou-table th,
+        .mou-table td {
+            border: 1px solid #ddd;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .mou-table th {
+            background-color: #434978; /* Matching header color from admin.html */
+            color: white;
+        }
+
+        .mou-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .mou-table tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        .search-input {
+            padding: 10px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 300px;
+        }
+
+        /* Highlight the active link with a different background color */
+nav ul li a.active {
+    background-color: #3a3f6e; /* Change this to any color you like */
+    color: white;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <div class="header">
+                <div class="profile-icon" id="profile-icon">
+                    <span>{{ request.user.username|slice:":1"|upper }}</span>
+                </div>
+                <h2 class="student-name">ADMIN</h2>
+            </div>
+        
+            <ul>
+                <li><img src="{% static 'images/home.png' %}" alt="Home Icon">
+                    <a href="{% url 'adminpage' %}" 
+                       class="{% if request.resolver_match.url_name == 'adminpage' %}active{% endif %}">
+                        Home
+                    </a>
+                </li>
+                <hr>
+                <li><img src="{% static 'images/mou.png' %}" alt="MOU Icon">
+                    <a href="{% url 'admin_mou' %}" 
+                       class="{% if request.resolver_match.url_name == 'admin_mou' %}active{% endif %}">
+                        MOU
+                    </a>
+                </li>
+                <hr>
+                <li><img src="{% static 'images/progress.png' %}" alt="Progress Icon">
+                    <a href="{% url 'admin_progress' %}" 
+                       class="{% if request.resolver_match.url_name == 'admin_progress' %}active{% endif %}">
+                        Progress
+                    </a>
+                </li>
+                <hr>
+                <li><img src="{% static 'images/activity.png' %}" alt="Activity Icon">
+                    <a href="{% url 'create_mou' %}" 
+                       class="{% if request.resolver_match.url_name == 'create_mou' %}active{% endif %}">
+                        Activity
+                    </a>
+                </li>
+                <hr>
+                <li><img src="{% static 'images/report.png' %}" alt="Report Icon">
+                    <a href="{% url 'mou_list' %}" 
+                       class="{% if request.resolver_match.url_name == 'mou_list' %}active{% endif %}">
+                        Report
+                    </a>
+                </li>
+            </ul>
+        
+        
+        
+            <!-- Dropdown box with user details -->
+            <div class="dropdown" id="dropdown-menu">
+                <div class="profile-info">
+                    <p><strong>Username:</strong> {{ request.user.username }}</p>
+                    <p><strong>Email:</strong> {{ request.user.email }}</p>
+                </div>
+                <a href="#">Profile</a>
+                <a href="#">Settings</a>
+                <a href="{% url 'index' %}">Logout</a>
+            </div>
+        </nav>
+        
+
+        <div class="content">
+            <div class="mou-header">
+                <form method="GET" action="{% url 'admin_mou' %}">
+                    <input type="text" name="department" placeholder="Search by Department" class="search-input">
+                </form>
+                <button class="expired-button" onclick="window.location.href='{% url 'admin_expired' %}'">Expired</button>
+                <button class="renewal-button" onclick="window.location.href='{% url 'admin_renewal' %}'">Renewal</button>
+            </div>
+
+            <table class="mou-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Partner</th>
+                        <th>Sector</th>
+                        <th>Purpose</th>
+                        <th>Department</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for mou in mou_data %}
+                    <tr>
+                        <td>{{ mou.Id }}</td>
+                        <td>{{ mou.Partner }}</td>
+                        <td>{{ mou.Sector }}</td>
+                        <td>{{ mou.Purpose }}</td>
+                        <td>{{ mou.Department }}</td>
+                        <td>{{ mou.Duration }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">No data available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Toggle the dropdown menu
+
+        // Toggle the dropdown menu
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdown-menu");
+            if (dropdown.style.display === "none" || dropdown.style.display === "") {
+                dropdown.style.display = "block";
+            } else {
+                dropdown.style.display = "none";
+            }
+        }
+
+        // Attach the event to the profile icon only
+        document.getElementById("profile-icon").addEventListener("click", function (event) {
+            event.stopPropagation(); // Prevent closing dropdown when clicking inside
+            toggleDropdown();
+        });
+
+        // Close the dropdown when clicking outside
+        window.onclick = function (event) {
+            if (!event.target.closest('#profile-icon')) {
+                var dropdown = document.getElementById("dropdown-menu");
+                if (dropdown.style.display === "block") {
+                    dropdown.style.display = "none";
+                }
+            }
+        };
+    </script>
+
+</body>
+
+</html>

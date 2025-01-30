@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity</title>
+    {% load static %}
+    <style>
+        /* General body styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #e0ffff;
+        }
+
+        /* Container for layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Navigation styles */
+        nav {
+            width: 200px;
+            background-color: #4d8690;
+            color: white;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #5eb6c2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .student-name {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 10px 0;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 10px 0;
+        }
+
+        nav hr {
+            border: 0;
+            border-top: 1px solid #ffffff40;
+            margin: 10px 0;
+        }
+
+        /* Content styles */
+        .content {
+            flex: 1;
+            padding: 20px;
+            background-color: #b5e9ea;
+        }
+
+        .mou-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .mou-header input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .search-button img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .search-button,
+        .expired-button,
+        .renewal-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #4d8690;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .search-button:hover,
+        .expired-button:hover,
+        .renewal-button:hover {
+            background-color: #3c6e72;
+            transform: scale(1.05);
+        }
+
+        .mou-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ddd;
+        }
+
+        .mou-table th,
+        .mou-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .mou-table th {
+            background-color: #4d8690;
+            color: white;
+        }
+
+        .mou-table tr:nth-child(even) {
+            background-color: #70b1c1;
+        }
+
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            width: 200px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <div class="header">
+                <div class="profile-icon">
+                    <span>S</span>
+                </div>
+                <h2 class="student-name">ADMIN</h2>
+            </div>
+            <ul>
+                <li><a href="{% url 'adminpage' %}" style="color: black;">Home</a></li>
+                <hr>
+                <li><a href="{% url 'admin_mou' %}">MOU</a></li>
+                <hr>
+                <li><a href="{% url 'admin_progress' %}">Progress</a></li>
+                <hr>
+                <li><a href="{% url 'create_mou' %}">Activity</a></li>
+                <hr>
+                <li><a href="{% url 'mou_list' %}">Report</a></li>
+                <hr>
+                
+            </ul>
+        </nav>
+
+        <div class="content">
+            <div class="mou-header">
+                <input type="text" placeholder="Search..." class="search-input">
+                
+                <button class="expired-button" onclick="window.location.href='{% url 'admin_expired' %}'">Expired</button>
+                <button class="renewal-button" onclick="window.location.href='{% url 'create_mou' %}'">Create MOU</button>
+            </div>
+
+            <table class="mou-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Partner</th>
+                        <th>Sector</th>
+                        <th>Status</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>TCS</td>
+                        <td>Industry</td>
+                        <td style="color: green;">ongoing</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>CIT</td>
+                        <td>Institution</td>
+                        
+                        <td style="color: red;">expired</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Global aid initiative</td>
+                        <td>NGO</td>
+                        
+                        <td style="color: red;">expired</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>IBM</td>
+                        <td>Industry</td>
+                        
+                        <td style="color: green;">ongoing</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Wipro</td>
+                        <td>Industry</td>
+                        
+                        <td style="color: green;">ongoing</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>KCT</td>
+                        <td>Institution</td>
+                        
+                        <td style="color: red;">expired</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>IBM</td>
+                        <td>Industry</td>
+                        
+                        <td style="color: green;">ongoing</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Wipro</td>
+                        <td>Industry</td>
+                        
+                        <td style="color: red;">expired</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>KCT</td>
+                        <td>Institution</td>
+                        
+                        <td style="color: red;">expired</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>IBM</td>
+                        <td>Industry</td>
+                        
+                        <td style="color: green;">ongoing</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>Wipro</td>
+                        <td>Industry</td>
+                        
+                        <td style="color: red;">expired</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>KCT</td>
+                        <td>Institution</td>
+                        
+                        <td style="color: green;">ongoing</td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" target="_blank">
+                                <img src="{% static 'edit.png' %}" alt="View" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% static 'pdf.pdf' %}" download="pdf.pdf">
+                                <img src="{% static 'del.png' %}" alt="Download" style="width: 20px; height: 20px;">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

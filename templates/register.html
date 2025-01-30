@@ -1,0 +1,171 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- Custom Styles -->
+    <style>
+      body {
+        font-family: 'Roboto', sans-serif;
+        background: linear-gradient(135deg, #f9f9f9, #e6e9f0);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .content {
+        background-color: #ffffff;
+        padding: 70px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(137, 137, 137, 0.1);
+        width: 100%;
+        max-width: 600px;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      h1 {
+        font-size: 32px;
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      label {
+        font-size: 16px;
+        color: #666;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        border-radius: 50px;
+        padding: 15px;
+        font-size: 16px;
+      }
+
+      .btn-custom {
+        background-color: #3a337a;
+        border-radius: 50px;
+        padding: 10px 25px;
+        font-size: 18px;
+        font-weight: 500;
+        transition: background-color 0.3s ease-in-out;
+        width: 100%;
+        margin-top: 20px;
+        color: #ffffff; /* Text color */
+        text-transform: uppercase; /* Optional: To make the text uppercase */
+      }
+
+      .btn-custom:hover {
+        background-color: #0056b3;
+      }
+
+      .form-block {
+        margin-bottom: 20px;
+      }
+
+      .d-flex {
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+      .checkbox-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .control {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .control input {
+        margin-right: 10px;
+      }
+
+      .animate {
+        animation: fadeInUp 1s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+    </style>
+
+    <title>User Registration</title>
+  </head>
+  <body>
+  <div class="content animate">
+    <div class="form-block">
+      <h1>User Registration</h1>
+      <span class="mb-4 text-muted">
+        {% if msg %}
+          {{ msg | safe }}
+        {% else %}
+          Please fill the form to register
+        {% endif %}
+      </span>
+      <form method="post">
+        {% csrf_token %}
+      
+        <div class="form-group">
+          <label for="username">Username</label>
+          {{ form.username }}
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          {{ form.email }}
+        </div>
+        <div class="form-group">
+          <label for="password1">Password</label>
+          {{ form.password1 }}
+        </div>
+        <div class="form-group">
+          <label for="password2">Confirm Password</label>
+          {{ form.password2 }}
+        </div>
+      
+        <!-- Dropdown for role selection -->
+        <div class="form-group">
+          <label for="role">Select Role:</label>
+          {{ form.role }}
+        </div>
+      
+        <!-- Error display -->
+        <span class="text-error">{{ form.errors }}</span>
+      
+        <!-- Submit button -->
+        <input type="submit" value="Register" class="btn btn-custom">
+      </form>
+      
+      
+      
+    </div>
+  </div>
+
+  <!-- JS Scripts -->
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>
